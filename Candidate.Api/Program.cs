@@ -26,7 +26,7 @@ var mappingConfig = new MapperConfiguration(mc =>
 IMapper mapper = mappingConfig.CreateMapper();
 builder.Services.AddSingleton(mapper);
 
-
+builder.Services.AddSwaggerGen();
 builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
 
@@ -55,6 +55,11 @@ app.Use(async (context, next) =>
     await next();
 });
 
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "My Test1 Api v1");
+});
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

@@ -25,7 +25,7 @@ public class CustomParser : IDataParser
                 Allowance = splitData[3].ToLong(),
                 Transportation = splitData[4].ToLong(),
                 Date = splitData[5],
-                hoursWorked = splitData[6].ToInt()
+                HoursWorked = splitData[6].ToInt()
             };
             result.Result = person;
             // انجام عملیات با داده‌های csvData

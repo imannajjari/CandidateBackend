@@ -188,7 +188,7 @@ public class PersonService : Repository<Person>, IPersonService
     private double CalculateTotalSalary(Person entity, string overTimeCalculator)
     {
         var calculator = _factory.CreateOvertimeCalculator(overTimeCalculator);
-        var overTime = calculator.CalculateOvertime(entity.BasicSalary, entity.Allowance, entity.hoursWorked);
+        var overTime = calculator.CalculateOvertime(entity.BasicSalary, entity.Allowance, entity.HoursWorked);
 
         var totalSalary = entity.BasicSalary + entity.Allowance + entity.Transportation + overTime;
         var tax = totalSalary * 10 / 100;
@@ -287,7 +287,7 @@ public class PersonService : Repository<Person>, IPersonService
         }
     }
 
-    public ResultViewModel<PersonViewModel> Get(int personCode, string date)
+    public ResultViewModel<PersonViewModel> Get(string personCode, string date)
     {
         var result = new ResultViewModel<PersonViewModel>();
         try
@@ -297,11 +297,11 @@ public class PersonService : Repository<Person>, IPersonService
             parameters.Add("@personCode", personCode);
             parameters.Add("@date", date);
 
-            var person = _dapper.RunQuery<Person>(query, parameters, "CandidateDB").FirstOrDefault();
+            var person = _dapper.RunQuery<Person>(query, parameters, "CandidateDB");
 
-            result.Result = _mapper.Map<PersonViewModel>(person);
+            result.List = _mapper.Map<List<PersonViewModel>>(person);
 
-
+            result.TotalCount = result.List.Count;
 
             result.Message = result.TotalCount > 0
                 ? new MessageViewModel { Status = Statuses.Success }
@@ -317,12 +317,12 @@ public class PersonService : Repository<Person>, IPersonService
 
     }
 
-    public ResultViewModel<PersonViewModel> GetRange(int personCode, int startDate, int endDate)
+    public ResultViewModel<PersonViewModel> GetRange(string personCode, string startDate, string endDate)
     {
         var result = new ResultViewModel<PersonViewModel>();
         try
         {
-            var query = "Select * from People where personCode=@personCode And Date between @fromDate and @toDate";
+            var query = "Select * from People where personCode=@personCode And Date between @startDate and @endDate";
             var parameters = new DynamicParameters();
             parameters.Add("@personCode", personCode);
             parameters.Add("@startDate", startDate);
@@ -332,7 +332,7 @@ public class PersonService : Repository<Person>, IPersonService
 
             result.List = _mapper.Map<List<PersonViewModel>>(person);
 
-
+            result.TotalCount = result.List.Count;
 
             result.Message = result.TotalCount > 0
                 ? new MessageViewModel { Status = Statuses.Success }
@@ -498,7 +498,7 @@ public class PersonService : Repository<Person>, IPersonService
                             Allowance = splitData[3].ToLong(),
                             Transportation = splitData[4].ToLong(),
                             Date = splitData[5],
-                            hoursWorked = splitData[6].ToInt()
+                            HoursWorked = splitData[6].ToInt()
 
                         };
                         result.Result = person;

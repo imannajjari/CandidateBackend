@@ -7,7 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 
 namespace Candidate.Data.Context;
 
-public class DatabaseContext:DbContext
+public class DatabaseContext : DbContext
 {
     public DatabaseContext(DbContextOptions options) : base(options)
     {
@@ -36,5 +36,8 @@ public class DatabaseContext:DbContext
             if (typeof(IEntity).IsAssignableFrom(type.ClrType))
                 modelBuilder.SetSoftDeleteFilter(type.ClrType);
         }
+
+
     }
+    public DbSet<Person> People { get; set; }
 }

@@ -11,8 +11,8 @@ public interface IPersonService:IRepository<Person>
     MessageViewModel Edit(Person entity, string overTimeCalculator);
     MessageViewModel Remove(int id, bool hardDelete = false);
 
-    ResultViewModel<PersonViewModel> Get(int personCode, string date);
+    ResultViewModel<PersonViewModel> Get(string personCode, string date);
 
-    ResultViewModel<PersonViewModel> GetRange(int personCode, int startDate, int endDate);
+    ResultViewModel<PersonViewModel> GetRange(string personCode, string startDate, string endDate);
     ResultViewModel<Person> ParseData(string datatype, InputViewModel data);
 }

@@ -12,7 +12,7 @@ public class Person:IEntity
     public long BasicSalary { get; set; }
     public long Allowance { get; set; }
     public long Transportation { get; set; }
-    public int hoursWorked { get; set; }
+    public int HoursWorked { get; set; }
     public double TotalSalary { get; set; }
     public string Date { get; set; }
     public bool IsActive { get; set; }
