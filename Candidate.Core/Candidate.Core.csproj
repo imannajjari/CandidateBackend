@@ -1,0 +1,66 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Folder Include="Mapping\" />
+    <Folder Include="Services\Interfaces\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.1" />
+    <PackageReference Include="Dapper" Version="2.0.123" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Candidate.Data\Candidate.Data.csproj" />
+    <ProjectReference Include="..\Candidate.OvetimePolicies\Candidate.OvertimePolicies.csproj" />
+
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="Resources\Errors.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Errors.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Messages.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Messages.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Statuses.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Statuses.resx</DependentUpon>
+    </Compile>
+    <Compile Update="Resources\Titles.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Titles.resx</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Update="Resources\Errors.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Errors.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Messages.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Messages.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Statuses.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Statuses.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Titles.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Titles.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
