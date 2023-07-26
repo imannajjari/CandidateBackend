@@ -123,6 +123,9 @@
   <data name="Exception" xml:space="preserve">
     <value>استثنای درونی</value>
   </data>
+  <data name="Parse" xml:space="preserve">
+    <value>تجزیه دیتا</value>
+  </data>
   <data name="Remove" xml:space="preserve">
     <value>حذف</value>
   </data>

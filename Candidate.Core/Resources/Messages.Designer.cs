@@ -61,6 +61,78 @@ namespace Candidate.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Csv نامعتبر.
+        /// </summary>
+        public static string InvalidCsv {
+            get {
+                return ResourceManager.GetString("InvalidCsv", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to داده نامعتبر است.
+        /// </summary>
+        public static string InvalidCustom {
+            get {
+                return ResourceManager.GetString("InvalidCustom", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to نوع داده نامشخص است.
+        /// </summary>
+        public static string InvalidDataType {
+            get {
+                return ResourceManager.GetString("InvalidDataType", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Json نامعتبر است.
+        /// </summary>
+        public static string InvalidJSON {
+            get {
+                return ResourceManager.GetString("InvalidJSON", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to XML نامعتبر.
+        /// </summary>
+        public static string InvalidXML {
+            get {
+                return ResourceManager.GetString("InvalidXML", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to هیچ رکوردی یافت نشد.
+        /// </summary>
+        public static string NotFoundAnyRecords {
+            get {
+                return ResourceManager.GetString("NotFoundAnyRecords", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to تجزینه دیتا با موفقیت صورت گرفت.
+        /// </summary>
+        public static string ParsedSuccesses {
+            get {
+                return ResourceManager.GetString("ParsedSuccesses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to خطا در تجزیه دیتا.
+        /// </summary>
+        public static string ParseFaild {
+            get {
+                return ResourceManager.GetString("ParseFaild", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to خطا در حذف رکورد.
         /// </summary>
         public static string RemoveFailed {

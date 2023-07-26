@@ -117,6 +117,30 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="InvalidCsv" xml:space="preserve">
+    <value>Csv نامعتبر</value>
+  </data>
+  <data name="InvalidCustom" xml:space="preserve">
+    <value>داده نامعتبر است</value>
+  </data>
+  <data name="InvalidDataType" xml:space="preserve">
+    <value>نوع داده نامشخص است</value>
+  </data>
+  <data name="InvalidJSON" xml:space="preserve">
+    <value>Json نامعتبر است</value>
+  </data>
+  <data name="InvalidXML" xml:space="preserve">
+    <value>XML نامعتبر</value>
+  </data>
+  <data name="NotFoundAnyRecords" xml:space="preserve">
+    <value>هیچ رکوردی یافت نشد</value>
+  </data>
+  <data name="ParsedSuccesses" xml:space="preserve">
+    <value>تجزینه دیتا با موفقیت صورت گرفت</value>
+  </data>
+  <data name="ParseFaild" xml:space="preserve">
+    <value>خطا در تجزیه دیتا</value>
+  </data>
   <data name="RemoveFailed" xml:space="preserve">
     <value>خطا در حذف رکورد</value>
   </data>

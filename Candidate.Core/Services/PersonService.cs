@@ -10,22 +10,38 @@ using Candidate.Core.Widgets.Log;
 using Candidate.Core.Widgets.Method;
 using Candidate.OvertimePolicies.Factories;
 using Candidate.OvertimePolicies.Interfaces;
+using System.Linq.Expressions;
+using Candidate.Core.Widgets.Dapper;
+using Candidate.Core.Widgets.Calendar;
+using Dapper;
+using System;
+using AutoMapper;
+using Candidate.Core.Presentations.Persons;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Formats.Asn1;
+using System.Xml.Serialization;
+using Candidate.Core.Widgets.Convertor;
+using CsvHelper;
 
 namespace Candidate.Core.Services;
 
-public class PersonService:Repository<Person>, IPersonService
+public class PersonService : Repository<Person>, IPersonService
 {
     private readonly IOvertimeCalculatorFactory _factory;
     private readonly ILogWidget _log;
-    public PersonService(DatabaseContext context, IOvertimeCalculatorFactory factory, ILogWidget log) : base(context)
+    private readonly IDapperWidget _dapper;
+    private readonly IMapper _mapper;
+    public PersonService(DatabaseContext context, IOvertimeCalculatorFactory factory, ILogWidget log, IDapperWidget dapper, IMapper mapper) : base(context)
     {
         _factory = factory;
         _log = log;
+        _dapper = dapper;
+        _mapper = mapper;
     }
-    public  MessageViewModel Add(Person entity,string overTimeCalculator)
+    public MessageViewModel Add(Person entity, string overTimeCalculator)
     {
         MessageViewModel result;
-        List<ErrorViewModel> errors = new List<ErrorViewModel>();
+        var errors = new List<ErrorViewModel>();
         try
         {
             try
@@ -48,7 +64,7 @@ public class PersonService:Repository<Person>, IPersonService
             }
             catch (Exception ex)
             {
-                
+
                 errors.Add(new ErrorViewModel()
                 {
                     ErrorCode = "100",
@@ -91,7 +107,7 @@ public class PersonService:Repository<Person>, IPersonService
     public MessageViewModel Edit(Person entity, string overTimeCalculator)
     {
         MessageViewModel result;
-        List<ErrorViewModel> errors = new List<ErrorViewModel>();
+        var errors = new List<ErrorViewModel>();
         try
         {
             var exist = Exist(entity.ID);
@@ -99,7 +115,7 @@ public class PersonService:Repository<Person>, IPersonService
             {
                 try
                 {
-                   entity.TotalSalary= CalculateTotalSalary(entity, overTimeCalculator);
+                    entity.TotalSalary = CalculateTotalSalary(entity, overTimeCalculator);
 
                     Update(entity);
                     Save();
@@ -186,7 +202,7 @@ public class PersonService:Repository<Person>, IPersonService
 
     private double CalculateTotalSalary(Person entity, string overTimeCalculator)
     {
-        IOvertimeCalculator calculator = _factory.CreateOvertimeCalculator(overTimeCalculator);
+        var calculator = _factory.CreateOvertimeCalculator(overTimeCalculator);
         var overTime = calculator.CalculateOvertime(entity.BasicSalary, entity.Allowance, entity.hoursWorked);
 
         var totalSalary = entity.BasicSalary + entity.Allowance + entity.Transportation + overTime;
@@ -194,10 +210,10 @@ public class PersonService:Repository<Person>, IPersonService
         return totalSalary - tax;
     }
 
-    public  MessageViewModel Remove(int id, bool hardDelete = false)
+    public MessageViewModel Remove(int id, bool hardDelete = false)
     {
         MessageViewModel result;
-        List<ErrorViewModel> errors = new List<ErrorViewModel>();
+        var errors = new List<ErrorViewModel>();
         try
         {
             var exist = Exist(id);
@@ -288,13 +304,283 @@ public class PersonService:Repository<Person>, IPersonService
         }
     }
 
-    public Person Get(int personCode, string date)
+    public ResultViewModel<PersonViewModel> Get(int personCode, string date)
     {
-        throw new NotImplementedException();
+        var result = new ResultViewModel<PersonViewModel>();
+        try
+        {
+            var query = "Select * from People where personCode=@personCode and Date=@date";
+            var parameters = new DynamicParameters();
+            parameters.Add("@personCode", personCode);
+            parameters.Add("@date", date);
+
+            var person = _dapper.RunQuery<Person>(query, parameters, "CandidateDB").FirstOrDefault();
+
+            result.Result = _mapper.Map<PersonViewModel>(person);
+
+
+
+            result.Message = result.TotalCount > 0
+                ? new MessageViewModel { Status = Statuses.Success }
+                : new MessageViewModel { Status = Statuses.Warning, Message = Messages.NotFoundAnyRecords };
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName());
+            result.Message = new MessageViewModel { Status = Statuses.Error, Message = _log.GetExceptionMessage(ex) };
+            return result;
+        }
+
     }
 
-    public List<Person> GetRange(int personCode, int startDate, int endDate)
+    public ResultViewModel<PersonViewModel> GetRange(int personCode, int startDate, int endDate)
     {
-        throw new NotImplementedException();
+        var result = new ResultViewModel<PersonViewModel>();
+        try
+        {
+            var query = "Select * from People where personCode=@personCode And Date between @fromDate and @toDate";
+            var parameters = new DynamicParameters();
+            parameters.Add("@personCode", personCode);
+            parameters.Add("@startDate", startDate);
+            parameters.Add("@endDate", endDate);
+
+            var person = _dapper.RunQuery<Person>(query, parameters, "CandidateDB");
+
+            result.List = _mapper.Map<List<PersonViewModel>>(person);
+
+
+
+            result.Message = result.TotalCount > 0
+                ? new MessageViewModel { Status = Statuses.Success }
+                : new MessageViewModel { Status = Statuses.Warning, Message = Messages.NotFoundAnyRecords };
+            return result;
+        }
+        catch (Exception ex)
+        {
+            _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName());
+            result.Message = new MessageViewModel { Status = Statuses.Error, Message = _log.GetExceptionMessage(ex) };
+            return result;
+        }
+    }
+
+    public ResultViewModel<Person> ParseData(string datatype, InputViewModel data)
+    {
+        ResultViewModel<Person> result = new ResultViewModel<Person>();
+        var errors = new List<ErrorViewModel>();
+        try
+        {
+            switch (datatype.ToLower())
+            {
+
+                case "json":
+                    // Parse JSON data
+                    try
+                    {
+                        result.Result = Newtonsoft.Json.JsonConvert.DeserializeObject<Person>(data.Data);
+                        // انجام عملیات با داده‌های jsonData
+                        result.Message = new MessageViewModel()
+                        {
+                            ID = 0,
+                            Status = Statuses.Success,
+                            Title = Titles.Parse,
+                            Message = Messages.ParsedSuccesses,
+                            Errors = errors,
+                            Value = ""
+                        };
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add(new ErrorViewModel()
+                        {
+                            ErrorCode = ex.HResult.ToString(),
+                            ErrorMessage = _log.GetExceptionMessage(ex)
+                        });
+                        errors.Add(new ErrorViewModel()
+                        {
+                            ErrorCode = "102",
+                            ErrorMessage = Messages.InvalidJSON
+                        });
+                        result.Message = new MessageViewModel()
+                        {
+                            ID = -1,
+                            Status = Statuses.Error,
+                            Title = Titles.Exception,
+                            Message = Messages.ParseFaild,
+                            Errors = errors,
+                            Value = ""
+                        };
+                        return result;
+                    }
+
+                case "xml":
+                    // Parse XML data
+                    try
+                    {
+                        var serializer = new XmlSerializer(typeof(Person));
+                        using (var reader = new StringReader(data.Data))
+                        {
+                            result.Result = (Person)serializer.Deserialize(reader);
+                            // انجام عملیات با داده‌های xmlData
+                            result.Message = new MessageViewModel()
+                            {
+                                ID = 0,
+                                Status = Statuses.Success,
+                                Title = Titles.Parse,
+                                Message = Messages.ParsedSuccesses,
+                                Errors = errors,
+                                Value = ""
+                            };
+                            return result;
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add(new ErrorViewModel()
+                        {
+                            ErrorCode = ex.HResult.ToString(),
+                            ErrorMessage = _log.GetExceptionMessage(ex)
+                        });
+                        errors.Add(new ErrorViewModel()
+                        {
+                            ErrorCode = "103",
+                            ErrorMessage = Messages.InvalidXML
+                        });
+                        result.Message = new MessageViewModel()
+                        {
+                            ID = -1,
+                            Status = Statuses.Error,
+                            Title = Titles.Exception,
+                            Message = Messages.ParseFaild,
+                            Errors = errors,
+                            Value = ""
+                        };
+                        return result;
+                    }
+
+                case "csv":
+                    // Parse CSV data
+                    try
+                    {
+                        using var reader = new StringReader(data.Data);
+                        using var csv = new CsvReader(reader,
+                            new CsvHelper.Configuration.CsvConfiguration(System.Globalization.CultureInfo
+                                .InvariantCulture));
+                        result.Result = csv.GetRecords<Person>().FirstOrDefault();
+                        // انجام عملیات با داده‌های csvData
+                        result.Message = new MessageViewModel()
+                        {
+                            ID = 0,
+                            Status = Statuses.Success,
+                            Title = Titles.Parse,
+                            Message = Messages.ParsedSuccesses,
+                            Errors = errors,
+                            Value = ""
+                        };
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add(new ErrorViewModel()
+                        {
+                            ErrorCode = ex.HResult.ToString(),
+                            ErrorMessage = _log.GetExceptionMessage(ex)
+                        });
+                        errors.Add(new ErrorViewModel()
+                        {
+                            ErrorCode = "104",
+                            ErrorMessage = Messages.InvalidCsv
+                        });
+                        result.Message = new MessageViewModel()
+                        {
+                            ID = -1,
+                            Status = Statuses.Error,
+                            Title = Titles.Exception,
+                            Message = Messages.ParseFaild,
+                            Errors = errors,
+                            Value = ""
+                        };
+                        return result;
+                    }
+                case "custom":
+                    // Parse custom data
+                    try
+                    {
+                        var splitData = data.Data.Split('/');
+                        Person person = new Person
+                        {
+                            FirstName = splitData[0],
+                            LastName = splitData[1],
+                            BasicSalary = splitData[2].ToLong(),
+                            Allowance = splitData[3].ToLong(),
+                            Transportation = splitData[4].ToLong(),
+                            Date = splitData[5],
+                            hoursWorked = splitData[6].ToInt()
+
+                        };
+                        result.Result = person;
+                        // انجام عملیات با داده‌های csvData
+                        result.Message = new MessageViewModel()
+                        {
+                            ID = 0,
+                            Status = Statuses.Success,
+                            Title = Titles.Parse,
+                            Message = Messages.ParsedSuccesses,
+                            Errors = errors,
+                            Value = ""
+                        };
+                        return result;
+                    }
+                    catch (Exception ex)
+                    {
+                        errors.Add(new ErrorViewModel()
+                        {
+                            ErrorCode = ex.HResult.ToString(),
+                            ErrorMessage = _log.GetExceptionMessage(ex)
+                        });
+                        errors.Add(new ErrorViewModel()
+                        {
+                            ErrorCode = "104",
+                            ErrorMessage = Messages.InvalidCustom
+                        });
+                        result.Message = new MessageViewModel()
+                        {
+                            ID = -1,
+                            Status = Statuses.Error,
+                            Title = Titles.Exception,
+                            Message = Messages.ParseFaild,
+                            Errors = errors,
+                            Value = ""
+                        };
+                        return result;
+                    }
+
+
+                default:
+
+                    errors.Add(new ErrorViewModel()
+                    {
+                        ErrorCode = "106",
+                        ErrorMessage = Messages.InvalidDataType
+                    });
+                    result.Message = new MessageViewModel()
+                    {
+                        ID = -1,
+                        Status = Statuses.Error,
+                        Title = Titles.Exception,
+                        Message = Messages.ParseFaild,
+                        Errors = errors,
+                        Value = ""
+                    };
+                    return result;
+            }
+        }
+        catch (Exception ex)
+        {
+            _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName());
+            result.Message = new MessageViewModel { Status = Statuses.Error, Message = _log.GetExceptionMessage(ex) };
+            return result;
+        }
     }
 }

@@ -79,6 +79,15 @@ namespace Candidate.Core.Resources {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to تجزیه دیتا.
+        /// </summary>
+        public static string Parse {
+            get {
+                return ResourceManager.GetString("Parse", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to حذف.
         /// </summary>
         public static string Remove {
