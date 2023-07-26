@@ -3,19 +3,13 @@ using Candidate.Core.Presentations.Persons;
 using Candidate.Core.Resources;
 using Candidate.Core.Widgets.Convertor;
 using Candidate.Core.Widgets.DataParser.Interface;
-using Candidate.Core.Widgets.Log;
 using Candidate.Data.Models;
 
 namespace Candidate.Core.Widgets.DataParser;
 
 public class CustomParser : IDataParser
 {
-    private readonly ILogWidget _log;
-
-    public CustomParser(ILogWidget log)
-    {
-        _log = log;
-    }
+    
     public ResultViewModel<Person> Parse(InputViewModel data)
     {
         var result = new ResultViewModel<Person>();
@@ -50,7 +44,7 @@ public class CustomParser : IDataParser
             errors.Add(new ErrorViewModel()
             {
                 ErrorCode = ex.HResult.ToString(),
-                ErrorMessage = _log.GetExceptionMessage(ex)
+                ErrorMessage = Messages.UnknownException
             });
             errors.Add(new ErrorViewModel()
             {

@@ -1,7 +1,9 @@
 ﻿using Candidate.Core.Services;
 using Candidate.Core.Services.Interfaces;
+using Candidate.Core.Widgets.Dapper;
 using Candidate.Core.Widgets.DataParser;
 using Candidate.Core.Widgets.DataParser.Interface;
+
 using Candidate.OvertimePolicies.Factories;
 using Candidate.OvertimePolicies.Interfaces;
 using Candidate.OvertimePolicies.Services;
@@ -14,17 +16,26 @@ public static class Injector
     {
         service.AddScoped<IPersonService, PersonService>();
 
-        service.AddTransient<IOvertimeCalculator, CalculatorA>();
-        service.AddTransient<IOvertimeCalculator, CalculatorB>();
-        service.AddTransient<IOvertimeCalculator, CalculatorC>();
-        service.AddTransient<IOvertimeCalculatorFactory, OvertimeCalculatorFactory>();
-       
-     
 
-        service.AddTransient<IDataParser, JsonParser>();
-        service.AddTransient<IDataParser, XmlParser>();
-        service.AddTransient<IDataParser, CsvParser>();
-        service.AddTransient<IDataParser, CustomParser>();
+        service.AddScoped<CalculatorA>()
+            .AddScoped<IOvertimeCalculator, CalculatorA>(s => s.GetService<CalculatorA>());
+        service.AddScoped<CalculatorB>()
+            .AddScoped<IOvertimeCalculator, CalculatorB>(s => s.GetService<CalculatorB>());
+        service.AddScoped<CalculatorC>()
+            .AddScoped<IOvertimeCalculator, CalculatorC>(s => s.GetService<CalculatorC>());
+        service.AddScoped<IOvertimeCalculatorFactory, OvertimeCalculatorFactory>();
+
+
+        service.AddScoped<JsonParser>()
+            .AddScoped<IDataParser, JsonParser>(s => s.GetService<JsonParser>());
+        service.AddScoped<XmlParser>()
+            .AddScoped<IDataParser, XmlParser>(s => s.GetService<XmlParser>());
+        service.AddScoped<CsvParser>()
+            .AddScoped<IDataParser, CsvParser>(s => s.GetService<CsvParser>());
+        service.AddScoped<CustomParser>()
+            .AddScoped<IDataParser, CustomParser>(s => s.GetService<CustomParser>());
         service.AddTransient<IDataParserFactory, DataParserFactory>();
+
+        service.AddScoped<IDapperWidget, DapperWidget>();
     }
 }

@@ -4,18 +4,13 @@ using Candidate.Core.Resources;
 using Candidate.Core.Widgets.DataParser.Interface;
 using Candidate.Data.Models;
 using System.Xml.Serialization;
-using Candidate.Core.Widgets.Log;
+
 
 namespace Candidate.Core.Widgets.DataParser;
 
 public class XmlParser : IDataParser
 {
-    private readonly ILogWidget _log;
-
-    public XmlParser(ILogWidget log)
-    {
-        _log = log;
-    }
+    
 
     public ResultViewModel<Person> Parse(InputViewModel data)
     {
@@ -44,7 +39,7 @@ public class XmlParser : IDataParser
             errors.Add(new ErrorViewModel()
             {
                 ErrorCode = ex.HResult.ToString(),
-                ErrorMessage = _log.GetExceptionMessage(ex)
+                ErrorMessage = Messages.UnknownException
             });
             errors.Add(new ErrorViewModel()
             {

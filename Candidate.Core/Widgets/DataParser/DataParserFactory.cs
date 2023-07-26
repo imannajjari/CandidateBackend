@@ -1,6 +1,6 @@
 ﻿using Candidate.Core.Widgets.DataParser.Interface;
-using Candidate.Core.Widgets.Log;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 
 namespace Candidate.Core.Widgets.DataParser;
 
@@ -18,7 +18,7 @@ public class DataParserFactory: IDataParserFactory
         switch (datatype.ToLower())
         {
             case "json":
-                return _serviceProvider.GetService<JsonParser>();
+                return _serviceProvider.GetService<JsonParser>();// _serviceProvider.GetService<JsonParser>();
             case "xml":
                 return _serviceProvider.GetService<XmlParser>();
             case "csv":

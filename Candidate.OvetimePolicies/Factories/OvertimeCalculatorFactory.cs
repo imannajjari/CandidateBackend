@@ -11,21 +11,26 @@ public class OvertimeCalculatorFactory : IOvertimeCalculatorFactory
 
     public OvertimeCalculatorFactory(IServiceProvider serviceProvider)
     {
-        _serviceProvider = serviceProvider;
+           _serviceProvider = serviceProvider;
     }
 
     public IOvertimeCalculator CreateOvertimeCalculator(string type)
     {
+        IOvertimeCalculator calculator;
         switch (type.ToLower())
         {
-            case "CalculatorC":
-                return _serviceProvider.GetService<CalculatorC>();
-            case "CalculatorB":
-                return  _serviceProvider.GetService<CalculatorB>();
-            case "CalculatorA":
-                return _serviceProvider.GetService<CalculatorA>();
+            case "calculatorc":
+                calculator = _serviceProvider.GetService<CalculatorC>();
+                return calculator;
+            case "calculatorb":
+                calculator = _serviceProvider.GetService<CalculatorB>();
+                return calculator;
+            case "calculatora":
+                calculator =_serviceProvider.GetService<CalculatorA>();
+                return calculator;
             default:
                 throw new ArgumentException("Invalid calculator type.");
+                
         }
     }
 }

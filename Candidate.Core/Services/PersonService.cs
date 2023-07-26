@@ -2,23 +2,13 @@
 using Candidate.Data.Context;
 using Candidate.Data.Models;
 using Candidate.Data.Repositories;
-using IdentityServer4.Models;
-using System.Reflection;
 using Candidate.Core.Presentations.Base;
 using Candidate.Core.Resources;
-using Candidate.Core.Widgets.Log;
-using Candidate.Core.Widgets.Method;
-using Candidate.OvertimePolicies.Factories;
 using Candidate.OvertimePolicies.Interfaces;
-using System.Linq.Expressions;
 using Candidate.Core.Widgets.Dapper;
-using Candidate.Core.Widgets.Calendar;
 using Dapper;
-using System;
 using AutoMapper;
 using Candidate.Core.Presentations.Persons;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-using System.Formats.Asn1;
 using System.Xml.Serialization;
 using Candidate.Core.Widgets.Convertor;
 using CsvHelper;
@@ -28,13 +18,11 @@ namespace Candidate.Core.Services;
 public class PersonService : Repository<Person>, IPersonService
 {
     private readonly IOvertimeCalculatorFactory _factory;
-    private readonly ILogWidget _log;
     private readonly IDapperWidget _dapper;
     private readonly IMapper _mapper;
-    public PersonService(DatabaseContext context, IOvertimeCalculatorFactory factory, ILogWidget log, IDapperWidget dapper, IMapper mapper) : base(context)
+    public PersonService(DatabaseContext context, IOvertimeCalculatorFactory factory,  IDapperWidget dapper, IMapper mapper) : base(context)
     {
         _factory = factory;
-        _log = log;
         _dapper = dapper;
         _mapper = mapper;
     }
@@ -73,7 +61,7 @@ public class PersonService : Repository<Person>, IPersonService
                 errors.Add(new ErrorViewModel()
                 {
                     ErrorCode = ex.HResult.ToString(),
-                    ErrorMessage = _log.GetExceptionMessage(ex)
+                    ErrorMessage = Messages.UnknownException
                 });
                 result = new MessageViewModel()
                 {
@@ -89,7 +77,6 @@ public class PersonService : Repository<Person>, IPersonService
         }
         catch (Exception ex)
         {
-            _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName(), 1);
 
             result = new MessageViewModel()
             {
@@ -97,7 +84,7 @@ public class PersonService : Repository<Person>, IPersonService
                 Status = Statuses.Error,
                 Title = Titles.Exception,
                 Message = Messages.UnknownException,
-                Value = _log.GetExceptionMessage(ex)
+                Value = ""
             };
 
             return result;
@@ -132,7 +119,6 @@ public class PersonService : Repository<Person>, IPersonService
                 }
                 catch (Exception ex)
                 {
-                    _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName());
                     errors.Add(new ErrorViewModel()
                     {
                         ErrorCode = "100",
@@ -141,7 +127,7 @@ public class PersonService : Repository<Person>, IPersonService
                     errors.Add(new ErrorViewModel()
                     {
                         ErrorCode = ex.HResult.ToString(),
-                        ErrorMessage = _log.GetExceptionMessage(ex)
+                        ErrorMessage = Messages.UnknownException
                     });
                     result = new MessageViewModel()
                     {
@@ -176,7 +162,6 @@ public class PersonService : Repository<Person>, IPersonService
         }
         catch (Exception ex)
         {
-            _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName(), 1);
             errors.Add(new ErrorViewModel()
             {
                 ErrorCode = "100",
@@ -185,7 +170,7 @@ public class PersonService : Repository<Person>, IPersonService
             errors.Add(new ErrorViewModel()
             {
                 ErrorCode = ex.HResult.ToString(),
-                ErrorMessage = _log.GetExceptionMessage(ex)
+                ErrorMessage = Messages.UnknownException
             });
             result = new MessageViewModel()
             {
@@ -243,7 +228,7 @@ public class PersonService : Repository<Person>, IPersonService
                     errors.Add(new ErrorViewModel()
                     {
                         ErrorCode = ex.HResult.ToString(),
-                        ErrorMessage = _log.GetExceptionMessage(ex)
+                        ErrorMessage = Messages.UnknownException
                     });
                     result = new MessageViewModel()
                     {
@@ -278,8 +263,6 @@ public class PersonService : Repository<Person>, IPersonService
         }
         catch (Exception ex)
         {
-            _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName(), 1);
-
             errors.Add(new ErrorViewModel()
             {
                 ErrorCode = "100",
@@ -288,7 +271,7 @@ public class PersonService : Repository<Person>, IPersonService
             errors.Add(new ErrorViewModel()
             {
                 ErrorCode = ex.HResult.ToString(),
-                ErrorMessage = _log.GetExceptionMessage(ex)
+                ErrorMessage = Messages.UnknownException
             });
             result = new MessageViewModel()
             {
@@ -327,8 +310,8 @@ public class PersonService : Repository<Person>, IPersonService
         }
         catch (Exception ex)
         {
-            _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName());
-            result.Message = new MessageViewModel { Status = Statuses.Error, Message = _log.GetExceptionMessage(ex) };
+            
+            result.Message = new MessageViewModel { Status = Statuses.Error, Message = Messages.UnknownException };
             return result;
         }
 
@@ -358,8 +341,7 @@ public class PersonService : Repository<Person>, IPersonService
         }
         catch (Exception ex)
         {
-            _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName());
-            result.Message = new MessageViewModel { Status = Statuses.Error, Message = _log.GetExceptionMessage(ex) };
+            result.Message = new MessageViewModel { Status = Statuses.Error, Message = Messages.UnknownException };
             return result;
         }
     }
@@ -395,7 +377,7 @@ public class PersonService : Repository<Person>, IPersonService
                         errors.Add(new ErrorViewModel()
                         {
                             ErrorCode = ex.HResult.ToString(),
-                            ErrorMessage = _log.GetExceptionMessage(ex)
+                            ErrorMessage = Messages.UnknownException
                         });
                         errors.Add(new ErrorViewModel()
                         {
@@ -440,7 +422,7 @@ public class PersonService : Repository<Person>, IPersonService
                         errors.Add(new ErrorViewModel()
                         {
                             ErrorCode = ex.HResult.ToString(),
-                            ErrorMessage = _log.GetExceptionMessage(ex)
+                            ErrorMessage = Messages.UnknownException
                         });
                         errors.Add(new ErrorViewModel()
                         {
@@ -485,7 +467,7 @@ public class PersonService : Repository<Person>, IPersonService
                         errors.Add(new ErrorViewModel()
                         {
                             ErrorCode = ex.HResult.ToString(),
-                            ErrorMessage = _log.GetExceptionMessage(ex)
+                            ErrorMessage = Messages.UnknownException
                         });
                         errors.Add(new ErrorViewModel()
                         {
@@ -537,7 +519,7 @@ public class PersonService : Repository<Person>, IPersonService
                         errors.Add(new ErrorViewModel()
                         {
                             ErrorCode = ex.HResult.ToString(),
-                            ErrorMessage = _log.GetExceptionMessage(ex)
+                            ErrorMessage = Messages.UnknownException
                         });
                         errors.Add(new ErrorViewModel()
                         {
@@ -578,8 +560,7 @@ public class PersonService : Repository<Person>, IPersonService
         }
         catch (Exception ex)
         {
-            _log.ExceptionLog(ex, MethodBase.GetCurrentMethod()?.GetSourceName());
-            result.Message = new MessageViewModel { Status = Statuses.Error, Message = _log.GetExceptionMessage(ex) };
+            result.Message = new MessageViewModel { Status = Statuses.Error, Message = Messages.UnknownException };
             return result;
         }
     }

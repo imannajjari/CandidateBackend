@@ -16,7 +16,7 @@ public class PersonController : Controller
         _personService = personService;
         _dataParserFactory = dataParserFactory;
     }
-
+    [HttpPost]
     public MessageViewModel Add([FromRoute] string datatype, [FromBody] InputViewModel data)
     {
         var factory = _dataParserFactory.CreateParser(datatype);
