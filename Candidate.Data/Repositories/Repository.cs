@@ -112,9 +112,9 @@ public class Repository<T> : IRepository<T> where T : class, IEntity
 
     }
 
-    public virtual T GetByID(int id)
+    public virtual T? GetByID(int id)
     {
-        T entity;
+        T? entity;
         var result = GetAll(null, x => x.ID == id);
         entity = result.FirstOrDefault();
         return entity;

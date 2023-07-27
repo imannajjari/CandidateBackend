@@ -27,9 +27,26 @@ public class PersonController : Controller
         return result;
     }
 
+    [HttpPost]
+    [Route("{datatype=json}/Person/edit")]
+    public MessageViewModel Edit([FromRoute] string datatype, [FromBody] InputViewModel data)
+    {
+        var factory = _dataParserFactory.CreateParser(datatype);
+        var personData = factory.Parse(data);
+        var result = _personService.Edit(personData.Result, data.OverTimeCalculator);
+        return result;
+    }
+
+    [HttpGet]
+    [Route("Person/remove/{personID}")]
+    public MessageViewModel Remove(int personID)
+    {
+        var result = _personService.Remove(personID);
+        return result;
+    }
     [HttpGet]
     [Route("Person/get/{personCode}/{date}")]
-    public ResultViewModel<PersonViewModel> Get(string personCode,string date)
+    public ResultViewModel<PersonViewModel> Get(string personCode, string date)
     {
         var result = _personService.Get(personCode, date);
         return result;
@@ -37,9 +54,9 @@ public class PersonController : Controller
 
     [HttpGet]
     [Route("Person/getRange/{personCode}/{startDate}/{endDate}")]
-    public ResultViewModel<PersonViewModel> GetRange(string personCode, string startDate,string endDate)
+    public ResultViewModel<PersonViewModel> GetRange(string personCode, string startDate, string endDate)
     {
-        var result = _personService.GetRange(personCode,startDate,endDate);
+        var result = _personService.GetRange(personCode, startDate, endDate);
         return result;
     }
 }

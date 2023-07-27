@@ -3,7 +3,6 @@ using AutoMapper;
 using Candidate.Api.IoC;
 using Candidate.Core.Mapping;
 using Candidate.Data.Context;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 

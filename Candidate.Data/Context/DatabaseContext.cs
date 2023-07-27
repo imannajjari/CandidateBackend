@@ -1,6 +1,5 @@
 ﻿using Candidate.Data.Interfaces;
 using Candidate.Data.Models;
-using IdentityServer4.EntityFramework.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
