@@ -76,3 +76,9 @@ Iman/Najjari/3333/14000/120/160/14020509/47
 برای اطلاعات بیشتر درباره استفاده از این پروژه، می‌توانید به مستندات API و کد کتابخانه کلاس مراجعه کنید.
 
 
+برای تست API ها با Postman فایل Candidate.postman_collection در پوشه ProjectResources قرار دارد.
+
+
+برای ایجاد دیتابیس فایل Create DB در پوشه ProjectResources قرار دارد.
+
+برای ایجاد دیتای تستی اولیه فایل Initial TestData در پوشه ProjectResources قرار دارد.
