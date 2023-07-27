@@ -1,0 +1,176 @@
+{
+	"info": {
+		"_postman_id": "b00b430b-5c04-4a7c-be75-e2347924aca4",
+		"name": "Candidate",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "5511609"
+	},
+	"item": [
+		{
+			"name": "Add Json",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": \"{\\\"FirstName\\\":\\\"ایمان\\\",\\\"LastName\\\":\\\"نجاری\\\",\\\"PersonCode\\\":\\\"1234\\\",\\\"BasicSalary\\\":15000,\\\"Allowance\\\":100,\\\"Transportation\\\":140,\\\"HoursWorked\\\":45,\\\"Date\\\":\\\"1402/05/05\\\"}\",\r\n  \"overTimeCalculator\": \"CalculatorB\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}/json/Person/add",
+					"host": [
+						"{{BaseURL}}"
+					],
+					"path": [
+						"json",
+						"Person",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "EditJson",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": \"{\\\"ID\\\":7,\\\"FirstName\\\":\\\"ایمان\\\",\\\"LastName\\\":\\\"نجاری\\\",\\\"PersonCode\\\":\\\"1234\\\",\\\"BasicSalary\\\":15000,\\\"Allowance\\\":100,\\\"Transportation\\\":140,\\\"HoursWorked\\\":45,\\\"Date\\\":\\\"1402/05/05\\\"}\",\r\n  \"overTimeCalculator\": \"CalculatorB\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}json/Person/edit",
+					"host": [
+						"{{BaseURL}}json"
+					],
+					"path": [
+						"Person",
+						"edit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Custom",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"data\": \"Iman/Najjari/3333/14000/120/160/14020509/47\",\r\n  \"overTimeCalculator\": \"CalculatorA\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{BaseURL}}custom/Person/add",
+					"host": [
+						"{{BaseURL}}custom"
+					],
+					"path": [
+						"Person",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseURL}}person/get/1234/14020505",
+					"host": [
+						"{{BaseURL}}person"
+					],
+					"path": [
+						"get",
+						"1234",
+						"14020505"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Remove",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseURL}}person/remove/6",
+					"host": [
+						"{{BaseURL}}person"
+					],
+					"path": [
+						"remove",
+						"6"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetRange",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{BaseURL}}person/getRange/1234/14020202/14020606",
+					"host": [
+						"{{BaseURL}}person"
+					],
+					"path": [
+						"getRange",
+						"1234",
+						"14020202",
+						"14020606"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "BaseURL",
+			"value": "http://localhost:5069/",
+			"type": "string"
+		}
+	]
+}
