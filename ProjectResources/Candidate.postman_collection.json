@@ -169,7 +169,7 @@
 	"variable": [
 		{
 			"key": "BaseURL",
-			"value": "http://localhost:5069/",
+			"value": "https://candidatebackend.iran.liara.run/",
 			"type": "string"
 		}
 	]
