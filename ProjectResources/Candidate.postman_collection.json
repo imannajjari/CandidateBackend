@@ -169,7 +169,7 @@
 	"variable": [
 		{
 			"key": "BaseURL",
-			"value": "https://candidatebackend.iran.liara.run/",
+			"value": "https://candidatebackend.iran.liara.run",
 			"type": "string"
 		}
 	]
