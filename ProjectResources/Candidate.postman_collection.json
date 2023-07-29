@@ -21,7 +21,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BaseURL}}/json/Person/add",
+					"raw": "{{BaseURL}}json/Person/add",
 					"host": [
 						"{{BaseURL}}"
 					],
@@ -169,7 +169,7 @@
 	"variable": [
 		{
 			"key": "BaseURL",
-			"value": "https://candidatebackend.iran.liara.run",
+			"value": "https://candidatebackend.iran.liara.run/",
 			"type": "string"
 		}
 	]
