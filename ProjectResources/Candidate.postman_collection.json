@@ -1,9 +1,8 @@
 {
 	"info": {
-		"_postman_id": "b00b430b-5c04-4a7c-be75-e2347924aca4",
+		"_postman_id": "12fb3128-295b-42f5-92c8-ee2881766b93",
 		"name": "Candidate",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "5511609"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
 		{
@@ -21,7 +20,7 @@
 					}
 				},
 				"url": {
-					"raw": "{{BaseURL}}json/Person/add",
+					"raw": "{{BaseURL}}/json/Person/add",
 					"host": [
 						"{{BaseURL}}"
 					],
@@ -49,11 +48,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BaseURL}}json/Person/edit",
+					"raw": "{{BaseURL}}/json/Person/edit",
 					"host": [
-						"{{BaseURL}}json"
+						"{{BaseURL}}"
 					],
 					"path": [
+						"json",
 						"Person",
 						"edit"
 					]
@@ -76,11 +76,12 @@
 					}
 				},
 				"url": {
-					"raw": "{{BaseURL}}custom/Person/add",
+					"raw": "{{BaseURL}}/custom/Person/add",
 					"host": [
-						"{{BaseURL}}custom"
+						"{{BaseURL}}"
 					],
 					"path": [
+						"custom",
 						"Person",
 						"add"
 					]
@@ -94,11 +95,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BaseURL}}person/get/1234/14020505",
+					"raw": "{{BaseURL}}/person/get/1234/14020505",
 					"host": [
-						"{{BaseURL}}person"
+						"{{BaseURL}}"
 					],
 					"path": [
+						"person",
 						"get",
 						"1234",
 						"14020505"
@@ -113,11 +115,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BaseURL}}person/remove/6",
+					"raw": "{{BaseURL}}/person/remove/6",
 					"host": [
-						"{{BaseURL}}person"
+						"{{BaseURL}}"
 					],
 					"path": [
+						"person",
 						"remove",
 						"6"
 					]
@@ -131,11 +134,12 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{BaseURL}}person/getRange/1234/14020202/14020606",
+					"raw": "{{BaseURL}}/person/getRange/1234/14020202/14020606",
 					"host": [
-						"{{BaseURL}}person"
+						"{{BaseURL}}"
 					],
 					"path": [
+						"person",
 						"getRange",
 						"1234",
 						"14020202",
@@ -169,7 +173,7 @@
 	"variable": [
 		{
 			"key": "BaseURL",
-			"value": "https://candidatebackend.iran.liara.run/",
+			"value": "https://candidatebackend.iran.liara.run",
 			"type": "string"
 		}
 	]
